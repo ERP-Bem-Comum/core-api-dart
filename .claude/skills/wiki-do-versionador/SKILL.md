@@ -27,6 +27,14 @@ git clone git@github.com:ERP-Bem-Comum/core-api-dart.wiki.git
 Não há pull request, revisão nem proteção de branch na wiki: o push é a
 publicação. Releia antes de empurrar, porque não há segunda barreira.
 
+**O branch da wiki é `master`, não `main`.** Um workflow ou script que assuma
+`main` erra o alvo.
+
+**Sempre `git pull --rebase` antes do push.** O harness publica o diário por um
+clone próprio em `~/.cache/core-api-dart-wiki`, então o seu clone fica atrás sem
+aviso — o push é rejeitado com `fetch first` no pior momento, depois do texto
+pronto.
+
 ## As cinco armadilhas
 
 Medidas em 2026-09-08 contra o GitHub em produção, publicando uma página de
@@ -51,7 +59,8 @@ colidem. **Organize por prefixo no nome** (`Arq-Decisoes.md`), nunca por pasta.
 
 **4. Hífen no arquivo vira espaço no título.** `Spike-Capacidades.md` aparece
 como *"Spike Capacidades"*. Espaço e `/` no nome do arquivo tornam a página
-inacessível pela web.
+inacessível pela web — **acento, não**: `Decisões.md` responde em 200 e exibe
+*"Decisões"*. Nomeie a página em PT-BR acentuado, como manda `idioma.md`.
 
 **5. O repositório da wiki não existe até a primeira página ser criada pela
 interface web.** Com a wiki habilitada, o `git clone` ainda devolve

@@ -24,7 +24,7 @@
       "Bash(git log*)"
     ],
     "deny": [
-      "Read(./wiki/**)",
+      "Read(./wiki/diario/**)",
       "Read(.env)",
       "Read(.env.*)",
       "Read(//Users/gabriel_aderaldo/.config/sops/age/**)",
