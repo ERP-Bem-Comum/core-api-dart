@@ -28,6 +28,7 @@ deps:
 
 # Compila o executável do harness em build/harness quando o fonte é mais novo
 build-harness: deps
+    @mkdir -p "$(dirname {{harness}})"
     @test -x {{harness}} && test -z "$(find tool/harness -name '*.dart' -newer {{harness}} -print -quit)" || dart compile exe tool/harness/bin/harness.dart -o {{harness}} >&2
 
 # Valida as duas fontes por lib e o _FONTES.md por área de documentação
