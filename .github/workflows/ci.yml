@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  portao:
+    name: just check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Instala o just
+        uses: extractions/setup-just@v4
+
+      - name: Instala o Dart SDK
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Versões
+        run: |
+          just --version
+          dart --version
+
+      - name: Dependências do workspace
+        run: just deps
+
+      - name: Portão
+        run: just check

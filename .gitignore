@@ -1,0 +1,20 @@
+.ai-log/
+wiki/
+docs/offline-reference/
+
+.claude/settings.local.json
+CLAUDE.local.md
+.claude/agent-memory-local/
+
+# Dart
+.dart_tool/
+.packages
+build/
+doc/api/
+
+# Segredos
+.env
+.env.*
+!.env.example
+
+.DS_Store

@@ -1,0 +1,119 @@
+# Catálogo de fontes de documentação: mapa "lib × onde ler sobre ela".
+# Validado por `just fontes`. Regra em .claude/rules/documentacao.md.
+#
+# tipo ∈ mcp | llms-txt | cli | raw-source | web-fetch | offline (ordem de preferência)
+# Mínimo de duas fontes por entrada.
+
+- nome: claude-code
+  usada_para: Harness de IA deste repositório — hooks, regras, permissões, portão
+  fontes:
+    - tipo: llms-txt
+      onde: "https://code.claude.com/docs/llms-full.txt"
+      nota: "canônica e viva; grande — usar grep com âncora, nunca ler inteiro"
+    - tipo: cli
+      onde: "claude --help · claude plugin --help"
+      nota: "diz o que ESTA versão instalada aceita; a doc do site vai à frente"
+    - tipo: offline
+      onde: "docs/offline-reference/claude-code/_full.txt"
+      nota: "FALLBACK (posição 6). Cópia com data em _FONTES.md; gitignored"
+
+- nome: claude-api
+  usada_para: Referência da API Anthropic quando o projeto integrar LLM
+  fontes:
+    - tipo: llms-txt
+      onde: "https://platform.claude.com/llms-full.txt"
+      nota: "docs.claude.com responde 301 para platform.claude.com desde 2026"
+    - tipo: raw-source
+      onde: "skill `claude-api` (Skill tool)"
+      nota: "model ids, preços e params já destilados; mais barato que o _full.txt"
+    - tipo: offline
+      onde: "docs/offline-reference/claude-api/_full.txt"
+      nota: "FALLBACK (posição 6)"
+
+- nome: dart-sdk
+  usada_para: Linguagem e toolchain do backend (3.13.2 stable, bundled do Flutter)
+  fontes:
+    - tipo: mcp
+      onde: "mcp__dart__* (analyze_files, lsp, pub, pub_dev_search, rip_grep_packages)"
+      nota: "primeira parada para qualquer coisa de Dart neste repo"
+    - tipo: cli
+      onde: "dart help <sub> · dart analyze --help · dart --version"
+    - tipo: web-fetch
+      onde: "https://dart.dev/guides"
+
+- nome: lints
+  usada_para: Lints oficiais do time do Dart — base do `analysis_options.yaml` (6.1.0)
+  fontes:
+    - tipo: mcp
+      onde: "mcp__dart__pub_dev_search 'publisher:dart.dev lints'"
+      nota: "confirmou 6.1.0, publisher dart.dev — usado para escolher este pacote"
+    - tipo: raw-source
+      onde: "package:lints/recommended.yaml (via mcp__dart__read_package_uris)"
+      nota: "o conjunto REAL da versão resolvida; o site pode descrever outra"
+    - tipo: cli
+      onde: "dart analyze --fatal-infos"
+      nota: "denuncia lint inexistente ou descontinuado — foi assim que peguei o `unnecessary_await_in_return` deprecated"
+
+- nome: test
+  usada_para: Framework de testes do Dart — suíte do portão (`just test`)
+  fontes:
+    - tipo: mcp
+      onde: "mcp__dart__pub_dev_search 'package:test'"
+    - tipo: cli
+      onde: "dart help test · dart test --help"
+    - tipo: raw-source
+      onde: "package:test/ (via mcp__dart__rip_grep_packages)"
+
+- nome: mockito
+  usada_para: Mocks gerados para dependências externas nos testes (5.8.1)
+  fontes:
+    - tipo: mcp
+      onde: "mcp__dart__pub_dev_search 'mockito'"
+    - tipo: raw-source
+      onde: "package:mockito/annotations.dart (via mcp__dart__read_package_uris)"
+      nota: "as anotações reais da versão resolvida — @GenerateNiceMocks e cia."
+    - tipo: cli
+      onde: "dart run build_runner build --help"
+
+- nome: build_runner
+  usada_para: Gerador que produz os mocks do `mockito` (2.16.1)
+  fontes:
+    - tipo: cli
+      onde: "dart run build_runner --help · build --delete-conflicting-outputs"
+    - tipo: mcp
+      onde: "mcp__dart__pub_dev_search 'build_runner'"
+
+- nome: yaml
+  usada_para: Leitura de YAML no harness — catálogo, pubspec e workflows (3.1.x)
+  fontes:
+    - tipo: mcp
+      onde: "mcp__dart__pub_dev_search 'publisher:dart.dev yaml'"
+    - tipo: raw-source
+      onde: "package:yaml/yaml.dart (via mcp__dart__read_package_uris)"
+      nota: "YamlMap e YamlList são views; o tipo estático exige checagem explícita"
+
+- nome: args
+  usada_para: Parsing de argumentos no executável do harness (2.7.x)
+  fontes:
+    - tipo: mcp
+      onde: "mcp__dart__pub_dev_search 'publisher:dart.dev args'"
+    - tipo: raw-source
+      onde: "package:args/args.dart (via mcp__dart__read_package_uris)"
+
+- nome: postgresql
+  usada_para: PostgreSQL 18 — outbox, `SKIP LOCKED`, `LISTEN/NOTIFY` e `pg_cron` no próprio banco
+  fontes:
+    - tipo: mcp
+      onde: "mcp__claude_ai_pg-aiguide__* (exige authenticate)"
+      nota: "não verificado nesta sessão — autenticação pendente"
+    - tipo: web-fetch
+      onde: "https://www.postgresql.org/docs/18/"
+      nota: "fixar o /18/ na URL; /current/ muda de versão sem avisar"
+
+- nome: just
+  usada_para: Task runner — ponto único de entrada (`just check` é o portão)
+  fontes:
+    - tipo: cli
+      onde: "just --help · just --list · just --version  (1.57.0 nesta máquina)"
+    - tipo: web-fetch
+      onde: "https://just.systems/man/en/"

@@ -1,0 +1,20 @@
+#!/usr/bin/env dart
+import 'dart:io';
+
+/// Publica a página do diário na wiki antes do push.
+///
+/// Usa o executável compilado quando existe e cai para o fonte quando não.
+/// Nunca falha o push: um diário indisponível não impede entregar código.
+void main() {
+  final compilado = File('build/harness');
+  final resultado = compilado.existsSync()
+      ? Process.runSync(compilado.path, const ['diario'])
+      : Process.runSync('dart', const [
+          'run',
+          'tool/harness/bin/harness.dart',
+          'diario',
+        ]);
+
+  stdout.write(resultado.stdout);
+  stderr.write(resultado.stderr);
+}

@@ -1,0 +1,85 @@
+{
+  "extraKnownMarketplaces": {
+    "dart-flutter": {
+      "source": { "source": "github", "repo": "flutter/agent-plugins" }
+    }
+  },
+  "enabledPlugins": {
+    "dart-flutter@dart-flutter": true
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && just h statusline"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(just *)",
+      "Bash(dart analyze*)",
+      "Bash(dart format*)",
+      "Bash(dart test*)",
+      "Bash(dart pub *)",
+      "Bash(dart compile*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ],
+    "deny": [
+      "Read(./wiki/**)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(//Users/gabriel_aderaldo/.config/sops/age/**)",
+      "Edit(**/*.g.dart)",
+      "Edit(**/*.freezed.dart)",
+      "Bash(git push --force*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && just build-harness",
+            "timeout": 120,
+            "statusMessage": "Compilando o harness..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && just h hook-prompt",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && just h hook-answer",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && just h hook-stop",
+            "timeout": 180,
+            "statusMessage": "Rodando o portão (just check)..."
+          }
+        ]
+      }
+    ]
+  }
+}
