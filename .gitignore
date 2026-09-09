@@ -1,5 +1,4 @@
 .ai-log/
-wiki/
 docs/offline-reference/
 
 .claude/settings.local.json
